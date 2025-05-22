@@ -11,3 +11,5 @@ def greet(name):
   print(f"Hello, {name}")
 
 greet('Uche')
+
+print("This is my first summer 2025 project")
