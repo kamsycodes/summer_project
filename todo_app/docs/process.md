@@ -23,9 +23,10 @@ This file documents the development processes, decisions, challenges and lessons
 class Task:
 - id: int
 - title: str
+- description: str
 - due: datetime
 - priority: int (1-5 where 1 is the highest)
-- status: ENUM["open", "done"]
+- status: ENUM["pending", "completed"]
 - created_at: datetime
 
 ---

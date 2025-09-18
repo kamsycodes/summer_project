@@ -11,3 +11,15 @@ Pseudocode:
 - start the application
 
 """
+import argparse
+import sys
+from datetime import datetime, timedelta
+from todo import TodoManager
+from models import TaskStatus
+
+DATA_FILE = Path("todo.txt")
+
+def main():
+    print("Welcome to the To-Do List Application!")
+    
+    def add_task(task):
