@@ -4,7 +4,7 @@ This file documents the development processes, decisions, challenges and lessons
 ---
 
 ## 1. Project Overview
-- **App Name**: ToDo
+- **App Name**: ToDo CLI
 - **Goal**: This app will enable the user create, edit, view, delete todo tasks. 
 - **Tech Stack**: Python, Argparse, CLI
 
@@ -13,8 +13,8 @@ This file documents the development processes, decisions, challenges and lessons
 ## 2. Project Scope
 - CLI only
 - Store tasks in a text file "todo.txt"
-- Each task has ID, Title, due date, priority, status(done/open), timestamp
-- Commands include add new, edit, list, done, delete
+- Each task has ID, Title, due date, priority, status(completed/pending), timestamp
+- Commands include add new, edit, list, completed, delete
 - Sort by due date or priority
 
 ---
@@ -37,7 +37,7 @@ This file outlines the system design for the Todo App project.
     - todo_app/
       - README.md
       - main.py # Entry point, sets up argparse and CLI interface
-      - todo.py # Core business logic (add, list, done, delete, etc.)
+      - todo.py # Core business logic (add, list, completed, delete, etc.)
       - file_io.py # File handling (load/save tasks to todo.txt)
       - models.py # Class definitions
       - todo.txt # File to store tasks

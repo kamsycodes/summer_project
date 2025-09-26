@@ -34,7 +34,7 @@ def save_tasks(path: str, tasks: list[Task]) -> None
 import json
 import os
 from typing import List
-from todo_app.models import Task
+from models import Task
 
 class TaskFileManager:
     def __init__(self, filename: str = "todo.txt"):

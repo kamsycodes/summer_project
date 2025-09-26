@@ -6,7 +6,7 @@ All fields are required:
 - title: str
 - due: str        (YYYY-MM-DD)
 - priority: int   (1 = highest, 5 = lowest)
-- status: str     ("open" or "done")
+- status: str     ("PENDING" or "COMPLETED")
 - created_at: str (YYYY-MM-DDTHH:MM:SS)
 - completed_at: str (YYYY-MM-DDTHH:MM:SS)
 
@@ -38,21 +38,25 @@ class TaskStatus(Enum):
 class Task:
     id: int
     title: str
-    description: str
     due: datetime
     priority: int 
     status: TaskStatus
     created_at: datetime
 
     def __post_init__(self):
-        if not 1 <= self.priority <= 5:
-            raise ValueError("priority must be between 1 and 5")
+            if not isinstance(self.status, TaskStatus):
+                raise ValueError("status must be a TaskStatus enum")
+            if not 1 <= self.priority <= 5:
+                raise ValueError("priority must be between 1 and 5")
+            if not isinstance(self.due, datetime):
+                raise ValueError("due must be a datetime")
+            if not isinstance(self.created_at, datetime):
+                raise ValueError("created_at must be a datetime")
         
     def to_dict(self) -> dict:
         return {
             'id': self.id,
             'title': self.title,
-            'description': self.description,
             'due': self.due.isoformat(),
             'priority': self.priority,
             'status': self.status.value,
@@ -60,20 +64,25 @@ class Task:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Task':
+    def from_dict(cls, data: dict) -> "Task":
+        # Enforce presence of required fields
+        required = ["id", "title", "due", "priority", "status", "created_at"]
+        missing = [k for k in required if k not in data]
+        if missing:
+            raise ValueError(f"Missing required fields: {missing}")
+
         return cls(
-            id=data['id'],
-            title=data['title'],
-            description=data['description'],
-            due=datetime.fromisoformat(data['due']),
-            priority=data['priority'],
-            status=TaskStatus(data['status']),
-            created_at=datetime.fromisoformat(data['created_at']) if 'created_at' in data else None
+            id=int(data["id"]),
+            title=str(data["title"]),
+            due=datetime.fromisoformat(data["due"]),
+            priority=int(data["priority"]),
+            status=TaskStatus(data["status"]),              # string -> Enum
+            created_at=datetime.fromisoformat(data["created_at"]),
         )
     
     def __str__(self) -> str:
         return (
-                f"Task(id={self.id}, title='{self.title}', description='{self.description}', "
+                f"Task(id={self.id}, title='{self.title}', "
                 f"due={self.due.date()}, priority={self.priority}, status='{self.status.value}', "
                 f"created_at={self.created_at.isoformat()})"
                 )
